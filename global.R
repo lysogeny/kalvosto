@@ -21,7 +21,6 @@ theme_set(here_theme)
 meta <- readRDS('data/shiny/meta.rds')
 annotations <- readRDS('data/shiny/annotations.rds')
 mat <- readRDS('data/shiny/mat.rds')
-embeddings <- readRDS('data/shiny/embeddings.rds')
 
 # Pick a default gene to have as the default value for the colour scale.
 default_x <- meta$default_x

@@ -1,6 +1,6 @@
 ui <- fluidPage(
   theme="theme.css",
-  titlePanel(meta$name),
+  titlePanel(meta$title),
   sidebarLayout(
     sidebarPanel(
       div(
@@ -31,13 +31,7 @@ ui <- fluidPage(
       tabsetPanel(
         type='tabs',
         tabPanel("Plot", plotlyOutput(outputId="plot")),
-        tabPanel("Selected", tableOutput("table")),
-        tabPanel("Comparison", 
-          fluidRow(
-            column(6, p(selectInput("embedding1", "Embedding", choices=names(embeddings))), plotOutput("embedding1")),
-            column(6, p(selectInput("embedding2", "Embedding", choices=names(embeddings))), plotOutput("embedding2")),
-          )
-        )
+        tabPanel("Selected", tableOutput("table"))
       ),
     ),
   ),

@@ -149,40 +149,6 @@ server <- function(input, output, session) {
       labs(x="Selected", y=z_feature_name())
   }, res=110, bg='transparent')
 
-  output$embedding1 <- renderPlot({
-    em <- embeddings[[input$embedding1]]
-    d <- data.frame(
-      x=annotations[[em[1]]],
-      y=annotations[[em[2]]],
-      z=z_feature(),
-      facet=facet_feature()
-    )
-    d$facet = facet_feature()
-    g <- ggplot(d, aes(x, y, col=z)) + 
-      geom_point() + 
-      z_colour_scale() +
-      labs(col=z_feature_name(), x=em[1], y=em[2]) +
-      faceting()
-    g
-  }, res=110)
-
-  output$embedding2 <- renderPlot({
-    em <- embeddings[[input$embedding2]]
-    d <- data.frame(
-      x=annotations[[em[1]]],
-      y=annotations[[em[2]]],
-      z=z_feature(),
-      facet=facet_feature()
-    )
-    g <- ggplot(d, aes(x, y, col=z)) + 
-      geom_point() +
-      z_colour_scale() +
-      labs(col=z_feature_name(), x=em[1], y=em[2]) +
-      faceting()
-    g
-  }, res=110)
-
-
   observeEvent(input$clear, {
     updateSelectInput(session, 'x_src', selected=default_x)
     updateSelectInput(session, 'y_src', selected=default_y)
