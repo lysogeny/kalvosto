@@ -1,0 +1,29 @@
+#embedding1, #embedding2 {
+    height: calc(100vh - 200px) !important;
+    width: 100%;
+}
+#plot {
+    height: calc(100vh - 110px) !important;
+    width: 100%;
+}
+#sideplot {
+    height: 100% !important;
+    width: 100%;
+    flex-grow: 1;
+}
+.well {
+    height: calc(100vh - 80px) !important;
+    display: flex;
+    flex-flow: column;
+}
+#sidebarvar {
+    flex-grow: 1;
+}
+.container-fluid > div.row > div.col-sm-4 {
+    width: 300px;
+    height: calc(100vh - 80px) !important;
+}
+.container-fluid > div.row > div.col-sm-8 {
+    width: calc(100vw - 320px) !important;
+}
+

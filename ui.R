@@ -1,0 +1,45 @@
+ui <- fluidPage(
+  theme="theme.css",
+  titlePanel(meta$name),
+  sidebarLayout(
+    sidebarPanel(
+      div(
+        id="sidebarfixed",
+        selectInput("group", label="Grouping", choices=c("None", grouping_vars)),
+        #fluidRow(column(4, selectInput("filter_var", "Filter by:", choices=grouping_vars)),
+        #         column(4, selectInput("filter_cond", "Check", choices=c(">=", "<=", "==", "!=", ">", "<"))),
+        #         column(4, numericInput("filter_val", "Value", value=0.0))),
+        hr(),
+        selectInput("x_src", label="X Axis", choices=c("gene", names(annotations)), selected=default_x),
+        conditionalPanel(condition="input.x_src == 'gene'",
+          selectizeInput("x_gene", label="Gene Symbol", choices=NULL, multiple=F, selected=default_gene, options=list(closeAfterSelect=T))
+        ),
+        selectInput("y_src", label="Y Axis", choices=c("gene", names(annotations)), selected=default_y),
+        conditionalPanel(condition="input.y_src == 'gene'",
+          selectizeInput("y_gene", label="Gene Symbol", choices=NULL, multiple=F, selected=default_gene, options=list(closeAfterSelect=T))
+        ),
+        selectInput("z_src", label="Colour", choices=c("gene", names(annotations)), selected=default_z),
+        conditionalPanel(condition="input.z_src == 'gene'",
+          selectizeInput("z_gene", label="Gene Symbol", choices=NULL, multiple=F, selected=default_gene, options=list(closeAfterSelect=T))
+        ),
+        checkboxInput("axis_lock", "Lock axes", value=F),
+        actionButton("clear", label="Reset"),
+      ),
+      plotOutput("sideplot")
+    ),
+    mainPanel(
+      tabsetPanel(
+        type='tabs',
+        tabPanel("Plot", plotlyOutput(outputId="plot")),
+        tabPanel("Selected", tableOutput("table")),
+        tabPanel("Comparison", 
+          fluidRow(
+            column(6, p(selectInput("embedding1", "Embedding", choices=names(embeddings))), plotOutput("embedding1")),
+            column(6, p(selectInput("embedding2", "Embedding", choices=names(embeddings))), plotOutput("embedding2")),
+          )
+        )
+      ),
+    ),
+  ),
+)
+ui
