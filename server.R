@@ -35,21 +35,36 @@ server <- function(input, output, session) {
   })
 
   feature <- reactive({
-    dims <- c("x", "y", "z")
+    # TODO: This should also return the variable "facet" if `facet != 'None'`
+    # Basically this should return a plot-ready dataframe
     srcs <- src()
     genes <- gene()
     gene_truthiness <- sapply(genes, isTruthy)
     genes <- ifelse(gene_truthiness, genes, default_gene)
     features <- mapply(function(src, gene) {
-      if (src == 'gene' & isTruthy(gene))
+      if (src == 'gene' & isTruthy(gene) & length(gene) == 1)
         return(mat[,gene])
+      else if (src == 'gene' & isTruthy(gene) & length(gene > 1))
+        return(as.matrix(mat[,gene]))
       else if (src == 'gene' & !isTruthy(gene))
         return(rep(0, dim(mat))[1])
       else
         return(annotations[[src]])
     }, srcs, genes, SIMPLIFY=F) 
-    features <- as.data.frame(features)
-    names(features) <- dims
+    features <- as.data.frame(features) # as.matrix will densify
+    names(features) <- gsub("_src", "", names(features))
+    # This checks if we are faceting by gene
+    faceted_vars <- grep("\\..+", colnames(features))
+    if (length(faceted_vars) > 0) {
+      # Stacks the data frame if we are faceting by genes
+      stacked <- stack(features, faceted_vars)
+      colnames(stacked) <- c("z", "facet")
+      stacked$facet <- gsub("z\\.", "", stacked$facet)
+      features <- cbind(features[-faceted_vars], stacked)
+      # User has selected many many genes
+    } else {
+      features$facet <- facet_feature()
+    }
     features
   })
 
@@ -75,7 +90,9 @@ server <- function(input, output, session) {
   })
 
   z_colour_scale <- reactive({
-    if (is.numeric(z_feature())) {
+    if (src()['z_src'] == "gene") {
+      s <- scale_colour_viridis()
+    } else if (is.numeric(z_feature())) {
       s <- scale_colour_viridis()
     } else {
       s <- scale_colour_discrete()
@@ -92,7 +109,7 @@ server <- function(input, output, session) {
   })
 
   faceting <- reactive({
-    if (input$group != "None") {
+    if (input$group != "None" | (length(input$z_gene) > 1)) {
       facet_wrap(~facet, scales=ifelse(input$axis_lock, "fixed", "free"))
     } else {
       facet_null()
@@ -101,7 +118,6 @@ server <- function(input, output, session) {
 
   output$plot <- renderPlotly({
     d <- feature()
-    d$facet = facet_feature()
     d$row <- 1:dim(d)[1]
     g <- ggplot(d, aes(x, y, col=z, key=row)) +
       geom_jitter(width=ifelse(is.numeric(d$x), 0, 0.4),
@@ -148,6 +164,21 @@ server <- function(input, output, session) {
             plot.background=element_rect(fill='transparent', colour='transparent')) +
       labs(x="Selected", y=z_feature_name())
   }, res=110, bg='transparent')
+
+  observeEvent(input$z_gene, {
+    if ((length(input$z_gene) > 1) & (input$z_src == "gene")) {
+      shinyjs::disable("group")
+    } else {
+      shinyjs::enable("group")
+    }
+  })
+  observeEvent(input$z_src, {
+    if ((length(input$z_gene) > 1) & (input$z_src == "gene")) {
+      shinyjs::disable("group")
+    } else {
+      shinyjs::enable("group")
+    }
+  })
 
   observeEvent(input$clear, {
     updateSelectInput(session, 'x_src', selected=default_x)

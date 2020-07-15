@@ -1,4 +1,5 @@
 library("shiny")
+#library("shinyjs") # this is not explicitly imported
 library("ggplot2")
 library("plotly")
 library("viridis")
