@@ -85,7 +85,7 @@ function(input, output, session, opt) {
                   height=ifelse(is.numeric(d$v), 0, 0.4),
                   size=opt$size, alpha=opt$alpha) +
       labs(col='selected', x=name[['u']], y=name[['v']]) +
-      scale_colour_manual(values=c('black', 'red'))
+      opt$scale_disc
     return(layout(ggplotly(g, key=d$row)))
   })#, res=150)
 
