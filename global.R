@@ -23,11 +23,44 @@ meta <- readRDS('data/shiny/meta.rds')
 annotations <- readRDS('data/shiny/annotations.rds')
 mat <- readRDS('data/shiny/mat.rds')
 
-# Pick a default gene to have as the default value for the colour scale.
-default_x <- meta$default_x
-default_y <- meta$default_y
-default_z <- meta$default_z
-default_gene <- meta$default_gene
+######### discrete colour
 
-grouping_vars <- sapply(annotations, function(x) is.character(x) | is.factor(x) | is.logical(x))
-grouping_vars <- names(grouping_vars)[grouping_vars]
+## Create viridis colour scales
+scales_disc <- list(Viridis=scale_colour_viridis(discrete=T))
+## Create brewer colour scales
+# Discrete colour scales
+brewer_palettes <- list(
+  seq = c("Blues", "BuGn", "BuPu", "GnBu", "Greens", "Greys", "Oranges", "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples", "RdPu", "Reds", "YlGn", "YlGnBu", "YlOrBr", "YlOrRd"),
+  div = c("BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral"),
+  qual = c("Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "Set2", "Set3")
+)
+brewer_palettes <- stack(brewer_palettes)
+names(brewer_palettes) <- c("type", "pal")
+scales_brew <- Map(function(x, y) scale_colour_brewer(type=x, palette=y), 
+                   as.character(brewer_palettes$pal), as.character(brewer_palettes$type))
+names(scales_brew) <- paste("Brewer", brewer_palettes$pal, brewer_palettes$type)
+scales_dist <- Map(function(x, y) scale_colour_distiller(type=x, palette=y), 
+                   as.character(brewer_palettes$pal), as.character(brewer_palettes$type))
+names(scales_dist) <- paste("Distiller", brewer_palettes$pal, brewer_palettes$type)
+
+scales_disc <- c(scales_disc, scales_brew)
+
+########### continuous colour
+
+scales_cont <- list(Viridis=scale_colour_viridis())
+scales_cont <- c(scales_cont, scales_dist)
+
+################ MODULES
+
+module_base_dir <- "modules"
+# Either disable modules
+#modules_disable <- c("Simple Plot")
+#module_names <- dir(module_base_dir, full.names=F)
+#module_names <- setdiff(module_names, modules_disable)
+
+# Or explicitly enable them. This way you can order the tab panes
+module_names <- c("Basic Plot", "Twin View", "Selection Table")
+
+
+# Handle module globals
+Map(function(x) source(paste0(module_base_dir, '/', x, '/global.R')), module_names)
