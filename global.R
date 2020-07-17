@@ -4,6 +4,7 @@ library("ggplot2")
 library("plotly")
 library("viridis")
 library("Matrix")
+#library("clusterProfiler")
 
 # NB: currently there is a problem that all plots get drawn 4 times on initial
 # load, and on reset. I have not been able to fix this.
@@ -22,6 +23,7 @@ theme_set(here_theme)
 meta <- readRDS('data/shiny/meta.rds')
 annotations <- readRDS('data/shiny/annotations.rds')
 mat <- readRDS('data/shiny/mat.rds')
+cols <- readRDS('data/shiny/cols.rds')
 
 ######### discrete colour
 
@@ -59,7 +61,7 @@ module_base_dir <- "modules"
 #module_names <- setdiff(module_names, modules_disable)
 
 # Or explicitly enable them. This way you can order the tab panes
-module_names <- c("Basic Plot", "Twin View", "Selection Table")
+module_names <- c("Basic Plot", "Twin View", "Selection Table", "Selection Differences")
 
 
 # Handle module globals
