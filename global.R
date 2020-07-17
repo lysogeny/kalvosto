@@ -23,7 +23,7 @@ theme_set(here_theme)
 meta <- readRDS('data/shiny/meta.rds')
 annotations <- readRDS('data/shiny/annotations.rds')
 mat <- readRDS('data/shiny/mat.rds')
-if (file.exists("data/shiny/cols.rds")
+if (file.exists("data/shiny/cols.rds"))
   cols <- readRDS('data/shiny/cols.rds')
 
 ######### discrete colour
