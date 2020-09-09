@@ -5,9 +5,9 @@ server <- function(input, output, session) {
     size=1.0,
     alpha=1.0,
     scale_cont_name="Viridis",
-    scale_disc_name="Brewer qual Set1",
+    scale_disc_name="Rainbow",
     scale_cont=scales_cont[["Viridis"]],
-    scale_disc=scales_disc[["Brewer qual Set1"]]
+    scale_disc=scales_disc[["Rainbow"]]
   )
 
   # Handle option modal
