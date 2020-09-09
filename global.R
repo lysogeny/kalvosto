@@ -58,8 +58,10 @@ scales_disc <- c(scales_disc, more_scales, scales_brew)
 
 ########### continuous colour
 
-scales_cont <- list(Viridis=scale_colour_viridis())
-scales_cont <- c(scales_cont, scales_dist)
+scales_cont <- list(ViridisC=scale_colour_viridis())
+scales_cont_gen <- lapply(hcl.pals(), function(x) scale_colour_gradientn(colors=hcl.colors(16, x)))
+names(scales_cont_gen) <- hcl.pals()
+scales_cont <- c(scales_cont, scales_cont_gen, scales_dist)
 
 ################ MODULES
 

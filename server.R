@@ -4,9 +4,9 @@ server <- function(input, output, session) {
   plotopt <- reactiveValues(
     size=1.0,
     alpha=1.0,
-    scale_cont_name="Viridis",
+    scale_cont_name="ViridisC",
     scale_disc_name="Rainbow",
-    scale_cont=scales_cont[["Viridis"]],
+    scale_cont=scales_cont[["ViridisC"]],
     scale_disc=scales_disc[["Rainbow"]]
   )
 
