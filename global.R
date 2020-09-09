@@ -29,7 +29,13 @@ if (file.exists("data/shiny/cols.rds"))
 ######### discrete colour
 
 ## Create viridis colour scales
-scales_disc <- list(Viridis=scale_colour_viridis(discrete=T))
+scales_disc <- list(
+  Viridis=scale_colour_viridis(discrete=T),
+  Rainbow=discrete_scale("colour", "rainbow", palette=rainbow),
+  Topographical=discrete_scale("colour", "topo", palette=topo.colors),
+  Heatmap=discrete_scale("colour", "heat", palette=heat.colors),
+  CyanMagenta=discrete_scale("colour", "cm", palette=cm.colors)
+)
 ## Create brewer colour scales
 # Discrete colour scales
 brewer_palettes <- list(
@@ -46,7 +52,9 @@ scales_dist <- Map(function(x, y) scale_colour_distiller(type=x, palette=y),
                    as.character(brewer_palettes$pal), as.character(brewer_palettes$type))
 names(scales_dist) <- paste("Distiller", brewer_palettes$pal, brewer_palettes$type)
 
-scales_disc <- c(scales_disc, scales_brew)
+more_scales <- lapply(hcl.pals(), function(name) discrete_scale("colour", name, function(n) hcl.colors(n, palette=name)))
+names(more_scales) <- hcl.pals()
+scales_disc <- c(scales_disc, more_scales, scales_brew)
 
 ########### continuous colour
 
