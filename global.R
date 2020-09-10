@@ -45,7 +45,7 @@ brewer_palettes <- list(
 )
 brewer_palettes <- stack(brewer_palettes)
 names(brewer_palettes) <- c("type", "pal")
-scales_brew <- Map(function(x, y) scale_colour_brewer(type=x, palette=y), 
+scales_brew <- Map(function(x, y) scale_colour_brewer(type=x, palette=y),
                    as.character(brewer_palettes$pal), as.character(brewer_palettes$type))
 names(scales_brew) <- paste("Brewer", brewer_palettes$pal, brewer_palettes$type)
 scales_dist <- Map(function(x, y) scale_colour_distiller(type=x, palette=y), 
@@ -62,6 +62,8 @@ scales_cont <- list(ViridisC=scale_colour_viridis())
 scales_cont_gen <- lapply(hcl.pals(), function(x) scale_colour_gradientn(colors=hcl.colors(16, x)))
 names(scales_cont_gen) <- hcl.pals()
 scales_cont <- c(scales_cont, scales_cont_gen, scales_dist)
+
+message(paste("I have", length(scales_cont), "continuous and", length(scales_disc), "discrete colour scales"))
 
 ################ MODULES
 

@@ -26,6 +26,21 @@
 #sidebarvar {
     flex-grow: 1;
 }
+
+/* modal row */
+
+div.modal-body > div.container-fluid > div.row {
+  position: relative;
+}
+
+div.modal-body > div.container-fluid > div.row > div.col-sm-6:nth-child(2) {
+  position: absolute;
+  right: 0;
+  transform:translateY(-50%);
+  top: 50%;
+}
+
+
 div.row > div.col-sm-4 {
     width: 300px;
     height: calc(100vh - 105px) !important;
@@ -34,4 +49,3 @@ div.row > div.col-sm-4 {
 div.row > div.col-sm-8 {
     width: calc(100vw - 450px) !important;
 }
-
