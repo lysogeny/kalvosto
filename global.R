@@ -1,4 +1,5 @@
 library("shiny")
+library("yaml")
 #library("shinyjs") # this is not explicitly imported
 library("ggplot2")
 library("plotly")
@@ -17,14 +18,44 @@ library("Matrix")
 here_theme <- theme_bw()
 theme_set(here_theme)
 
-# These files are created by the 'prepare.R' script. Please refer to that for
-# information on how you shoudl shape these
-# Meta contains stuff such as the title of the data and whatnot
-meta <- readRDS('data/shiny/meta.rds')
-annotations <- readRDS('data/shiny/annotations.rds')
-mat <- readRDS('data/shiny/mat.rds')
-if (file.exists("data/shiny/cols.rds"))
-  cols <- readRDS('data/shiny/cols.rds')
+## Data Handling 
+# Data is as follows:
+# - App accepts an h5ad file (for example produced by python anndata)
+#   Basically just hdf5 with specific attribute names
+# - This app converts the h5ad to an intermediate format for faster reading.
+# - a meta.yaml Describes the data about the app (default columns, title)
+
+# TODO: Consider adding a module for changing preferences in meta.yaml
+
+file_h5ad <- "data/data.h5ad"
+file_rds <- "data/data.rds"
+file_meta <- "data/meta.yaml"
+
+# Check RDS are up to date and present
+if ((!file.exists(file_rds)) | (file.info(file_h5ad)$mtime > file.info(file_rds)$mtime)) {
+  # build RDS if they are out of date or missing
+  message("Rebuilding RDS cache")
+  source("prepareRDS.R")
+}
+
+######### Read RDS
+rdsdat <- readRDS(file_rds)
+mat <- rdsdat$mat
+annotations <- rdsdat$rows
+cols <- rdsdat$cols
+rm(rdsdat)
+
+if (file.exists(file_meta)) {
+  meta <- read_yaml(file_meta)
+} else {
+  meta <- list(
+    title="Assign a name to this by creating 'data/meta.yaml'"
+    default_x=colnames(cols)[1]
+    default_y=colnames(cols)[2]
+    default_z=colnames(cols)[3]
+    default_gene=colnames(mat)[1]
+  )
+}
 
 ######### discrete colour
 
