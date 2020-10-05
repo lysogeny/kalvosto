@@ -49,10 +49,10 @@ if (file.exists(file_meta)) {
   meta <- read_yaml(file_meta)
 } else {
   meta <- list(
-    title="Assign a name to this by creating 'data/meta.yaml'"
-    default_x=colnames(cols)[1]
-    default_y=colnames(cols)[2]
-    default_z=colnames(cols)[3]
+    title="Assign a name to this by creating 'data/meta.yaml'",
+    default_x=colnames(cols)[1],
+    default_y=colnames(cols)[2],
+    default_z=colnames(cols)[3],
     default_gene=colnames(mat)[1]
   )
 }
