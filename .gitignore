@@ -1,1 +1,2 @@
-data/preproc/*
+data/data.rds
+data/data.h5ad
