@@ -1,6 +1,7 @@
 # Convert h5ad to rds
 
 # I need a hdf5 library
+library("Matrix")
 library("rhdf5")
 
 # If you run this script alone for debug or something
@@ -13,7 +14,28 @@ h5 <- h5dump(file_h5ad)
 out <- list()
 
 # Mat
-out$mat <- t(h5$X)
+if (typeof(h5$X) == "list") {
+  xattr <- h5readAttributes("data/data.h5ad", "X")
+  if (xattr$`encoding-type` == "csr_matrix") {
+    out$mat <- sparseMatrix(p=X_indptr,
+                            x=X_data,
+                            j=X_indices,
+                            dims=xattr$shape,
+                            index1=F)
+  } else if (xattr$`encoding-type` == "csc_matrix") {
+    out$mat <- sparseMatrix(p=X_indptr,
+                            x=X_data,
+                            i=X_indices,
+                            dims=xattr$shape,
+                            index1=F)
+  } else {
+    message("Unknown sparse matrix format, exiting")
+    q(status=1, save="no")
+  }
+} else {
+  out$mat <- t(h5$X)
+}
+
 obsindex <- h5readAttributes(file_h5ad, "obs")[["_index"]]
 varindex <- h5readAttributes(file_h5ad, "var")[["_index"]]
 
