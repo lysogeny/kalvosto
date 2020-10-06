@@ -48,10 +48,13 @@ Finally, make sure that permissions are set in such a way that your shiny user
 (or group) has at least:
 
 - `meta.yaml`: `r` (reading)
-
 - `data/`: `rwx` (read, write, execute). Writing is necessary to create intermediate RDS files.
-
 - `data/data.h5ad`: `rw` (read, write). Writing is necessary for the package `rhdf5` to work properly.
+
+Typically this can be achieved by:
+
+    # chgrp -R shiny data/
+    # chmod -R g+w data/
 
 ## Running
 
