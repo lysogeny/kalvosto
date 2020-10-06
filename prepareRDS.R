@@ -16,6 +16,9 @@ out <- list()
 # Mat
 if (typeof(h5$X) == "list") {
   xattr <- h5readAttributes("data/data.h5ad", "X")
+  X_indptr <- as.matrix(h5$X$indptr)[,1]
+  X_indices <- as.matrix(h5$X$indices)[,1]
+  X_data <- as.matrix(h5$X$data)[,1]
   if (xattr$`encoding-type` == "csr_matrix") {
     out$mat <- sparseMatrix(p=X_indptr,
                             x=X_data,
