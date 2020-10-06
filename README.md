@@ -72,20 +72,11 @@ in `meta.yaml`.
 You can find the modules in the `modules` directory of this repository.
 Currently the following are available:
 
-Basic Plot
-:   A simple plotting panel that allows for most typical plots
-
-Simple Plot
-:   A simpler plotting panel
-
-Twin View
-:   A panel with two plots. The right pane uses the selection as colour.
-
-Selection Table
-:   A Table of selected objects
-
-Selection Differences
-:   Experimental computation of fold-changes between selected and unselected groups.
+- Basic Plot: A simple plotting panel that allows for most typical plots
+- Simple Plot: A simpler plotting panel
+- Twin View: A panel with two plots. The right pane uses the selection as colour.
+- Selection Table: A Table of selected objects
+- Selection Differences: Experimental computation of fold-changes between selected and unselected groups.
 
 ### Extending
 
@@ -99,11 +90,8 @@ all variables and UI elements (i.e. `basic_` or similar)
 
 Check the shiny server's logs for errors. A couple of common ones are:
 
-Something about reading or writing
-:   Permissions in the `data` directory are probably wrong
-
-Something about missing packages
-:   One of the dependencies is probably missing
+- Something about reading or writing: Permissions in the `data` directory are probably wrong
+- Something about missing packages: One of the dependencies is probably missing
 
 If you encounter other errors, please tell me.
 
