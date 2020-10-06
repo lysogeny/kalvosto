@@ -45,17 +45,28 @@ annotations <- rdsdat$rows
 cols <- rdsdat$cols
 rm(rdsdat)
 
+# Default meta values
+
+meta <- list(
+  title="Assign a name to this by creating 'data/meta.yaml'",
+  default_x=colnames(annotations)[1],
+  default_y=colnames(annotations)[2],
+  default_z=colnames(annotations)[3],
+  default_gene=colnames(mat)[1],
+  modules_enabled=c("Basic Plot", "Twin View", "Selection Table", "Selection Differences"),
+  default_scale_cont="ViridisC",
+  default_scale_disc="Rainbow",
+  default_point_size=1.0,
+  default_point_alpha=1.0
+)
+
 if (file.exists(file_meta)) {
-  meta <- read_yaml(file_meta)
-} else {
-  meta <- list(
-    title="Assign a name to this by creating 'data/meta.yaml'",
-    default_x=colnames(cols)[1],
-    default_y=colnames(cols)[2],
-    default_z=colnames(cols)[3],
-    default_gene=colnames(mat)[1]
-  )
-}
+  # Read custom settings values
+  meta_extra <- read_yaml(file_meta)
+  # Update with these values
+  meta[names(meta_extra)] <- meta_extra
+} 
+print(meta)
 
 ######### discrete colour
 
@@ -99,14 +110,5 @@ message(paste("I have", length(scales_cont), "continuous and", length(scales_dis
 ################ MODULES
 
 module_base_dir <- "modules"
-# Either disable modules
-#modules_disable <- c("Simple Plot")
-#module_names <- dir(module_base_dir, full.names=F)
-#module_names <- setdiff(module_names, modules_disable)
-
-# Or explicitly enable them. This way you can order the tab panes
-module_names <- c("Basic Plot", "Twin View", "Selection Table", "Selection Differences")
-
-
 # Handle module globals
-Map(function(x) source(paste0(module_base_dir, '/', x, '/global.R')), module_names)
+Map(function(x) source(paste0(module_base_dir, '/', x, '/global.R')), meta$modules_enabled)

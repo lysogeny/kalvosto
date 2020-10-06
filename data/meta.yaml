@@ -1,0 +1,33 @@
+# The title of the app displayed in the top row.
+# If you leave this blank, a default title will be displayed
+
+title: "Change this title by modifying meta.yaml"
+
+# You can set some default values for your data here.
+# default_x, y and z refer to the default values in the x, y and colour
+# select inputs.
+# If you leave these blank, the app will pick the first three columns from your
+# observation annotations.
+# If you leave the default_gene blank, the first column will be picked.
+
+#default_x: "X_umap1"
+#default_y: "X_umap2"
+#default_z: "gene"
+#default_gene: "Sox2"
+
+
+# You can also select which of the apps modules (tabs) you want to enable.
+# By default the following are selected.
+#
+modules_enabled:
+  - Basic Plot
+  - Twin View
+  - Selection Table
+  - Selection Differences
+
+# The default colour scales, as well as the default point size and alpha can be set
+# here.
+default_scale_cont: ViridisC
+default_scale_disc: Rainbow
+default_point_size: 1.0
+default_point_alpha: 1.0

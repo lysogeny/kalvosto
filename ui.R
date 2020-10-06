@@ -1,4 +1,4 @@
-ui_tabs <- Map(function(x) tabPanel(x, source(paste0(module_base_dir, '/', x, "/ui.R"))$value), module_names)
+ui_tabs <- Map(function(x) tabPanel(x, source(paste0(module_base_dir, '/', x, "/ui.R"))$value), meta$modules_enabled)
 
 
 ui <- fluidPage(

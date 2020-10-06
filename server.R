@@ -1,13 +1,13 @@
-servers <- Map(function(x) source(paste0(module_base_dir, '/', x, "/server.R")), module_names)
+servers <- Map(function(x) source(paste0(module_base_dir, '/', x, "/server.R")), meta$modules_enabled)
 server <- function(input, output, session) {
   # Reactive values for plotting options
   plotopt <- reactiveValues(
-    size=1.0,
-    alpha=1.0,
-    scale_cont_name="ViridisC",
-    scale_disc_name="Rainbow",
-    scale_cont=scales_cont[["ViridisC"]],
-    scale_disc=scales_disc[["Rainbow"]]
+    size=meta$default_point_size,
+    alpha=meta$default_point_alpha,
+    scale_cont_name=meta$default_scale_cont,
+    scale_disc_name=meta$default_scale_disc,
+    scale_cont=scales_cont[[meta$default_scale_cont]],
+    scale_disc=scales_disc[[meta$default_scale_disc]]
   )
 
   # Handle option modal
