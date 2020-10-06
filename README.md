@@ -36,8 +36,8 @@ Clone this app into your shiny server directory as `[name]`, i.e.:
     git clone https://github.com/lysogeny/kalvosto [name]
 
 Then place a dataset (`data.h5ad`) in the `data` directory.
-Optionally modify the `data/meta.yaml` to define some defaults (see `meta.yaml`
-for details).
+Optionally modify create `data/meta.yaml` to define some defaults (see `meta-example.yaml`
+for an example).
 
     $ tree data
     data
