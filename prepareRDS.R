@@ -18,7 +18,11 @@ rownames(out$mat) <- h5$obs$`_index`
 colnames(out$mat) <- h5$var$`_index`
 
 # Row annotations
-out$rows <- as.data.frame(h5$obs[Filter(function(n) substr(n, 1, 1) != "_", names(h5$obs))])
+out$rows <- h5$obs[Filter(function(n) substr(n, 1, 1) != "_", names(h5$obs))]
+for (name in names(h5$obs$`__categories`)) {
+  out$rows[[name]] = h5$obs$`__categories`[[name]][out$rows[[name]]+1]
+}
+out$rows <- as.data.frame(out$rows)
 if ("obsm" %in% names(h5)) {
   out$rows <- cbind(
     out$rows, 
@@ -36,7 +40,11 @@ if (prod(dim(out$rows)) > 0) {
 }
 
 # Column annotations
-out$cols <- as.data.frame(h5$var[Filter(function(n) substr(n, 1, 1) != "_", names(h5$var))])
+out$cols <- h5$var[Filter(function(n) substr(n, 1, 1) != "_", names(h5$var))]
+for (name in names(h5$var$`__categories`)) {
+  out$cols[[name]] = h5$var$`__categories`[[name]][out$cols[[name]]+1]
+}
+out$cols <- as.data.frame(out$cols)
 if ("varm" %in% names(h5)) {
   out$cols <- cbind(
     out$cols,
@@ -49,7 +57,6 @@ if ("varm" %in% names(h5)) {
     )
   )
 }
-
 if (prod(dim(out$cols)) > 0) {
   rownames(out$cols) <- h5$var$`_index`
 }
@@ -58,3 +65,7 @@ if (prod(dim(out$cols)) > 0) {
 
 # Then I save the output
 saveRDS(out, "data/data.rds")
+
+
+####
+
