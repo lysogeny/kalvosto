@@ -14,8 +14,11 @@ out <- list()
 
 # Mat
 out$mat <- t(h5$X)
-rownames(out$mat) <- h5$obs$`_index`
-colnames(out$mat) <- h5$var$`_index`
+obsindex <- h5readAttributes(file_h5ad, "obs")[["_index"]]
+varindex <- h5readAttributes(file_h5ad, "var")[["_index"]]
+
+rownames(out$mat) <- h5$obs[[obsindex]]
+colnames(out$mat) <- h5$var[[varindex]]
 
 # Row annotations
 out$rows <- h5$obs[Filter(function(n) substr(n, 1, 1) != "_", names(h5$obs))]
@@ -35,8 +38,9 @@ if ("obsm" %in% names(h5)) {
     )
   )
 }
+# Getting the indices
 if (prod(dim(out$rows)) > 0) {
-  rownames(out$rows) <- h5$obs$`_index`
+  rownames(out$rows) <- h5$obs[[varindex]]
 }
 
 # Column annotations
@@ -58,14 +62,11 @@ if ("varm" %in% names(h5)) {
   )
 }
 if (prod(dim(out$cols)) > 0) {
-  rownames(out$cols) <- h5$var$`_index`
+  rownames(out$cols) <- h5$var[[varindex]]
 }
 
 
 
 # Then I save the output
-saveRDS(out, "data/data.rds")
-
-
+saveRDS(out, file_rds)
 ####
-
