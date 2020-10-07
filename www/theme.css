@@ -27,6 +27,15 @@
     flex-grow: 1;
 }
 
+div.sideways {
+  display: flex;
+}
+div.sideways * {
+  margin-right: 0.1em;
+  margin-left: 0.1em;
+  margin-bottom: 0.5em;
+}
+
 /* modal row */
 
 div.modal-body > div.container-fluid > div.row {

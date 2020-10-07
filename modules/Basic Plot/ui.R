@@ -10,7 +10,9 @@ sidebarLayout(
       selectizeInput("basic_y_gene", label="Y Gene", choices=NULL, multiple=F, selected=basic_default_gene, options=list(closeAfterSelect=T)),
       selectInput("basic_z_src", label="Z Axis (Colour)", choices=c("gene", names(annotations)), selected=basic_default_z),
       selectizeInput("basic_z_gene", label="Z Gene", choices=NULL, multiple=T, selected=basic_default_gene, options=list(closeAfterSelect=T)),
-      checkboxInput("basic_axis_lock", "Lock axes", value=F),
+      div(checkboxInput("basic_axis_lock", "Lock axes", value=F),
+          checkboxInput("basic_asp_lock", "Lock aspect", value=F),
+          class="sideways"),
       actionButton("basic_clear", label="Reset"),
     )
   ),

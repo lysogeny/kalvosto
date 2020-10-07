@@ -95,6 +95,9 @@ server <- function(input, output, session, opt) {
       labs(col=name[['z']], x=name[['x']], y=name[['y']]) +
       z_colour_scale() + 
       faceting()
+    if (input$basic_asp_lock) {
+      g <- g + coord_fixed()
+    }
     return(layout(ggplotly(g, key=d$row), dragmode="lasso"))
   })#, res=150)
 
