@@ -63,6 +63,9 @@ if ("obsm" %in% names(h5)) {
     )
   )
 }
+# We don't want the index to be visible to the user. Likely they will just
+# crash the server if they try to plot it.
+out$rows <- out$rows[colnames(out$rows) != obsindex]
 # Getting the indices
 if (prod(dim(out$rows)) > 0) {
   rownames(out$rows) <- h5$obs[[varindex]]
