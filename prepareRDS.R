@@ -45,6 +45,38 @@ varindex <- h5readAttributes(file_h5ad, "var")[["_index"]]
 rownames(out$mat) <- h5$obs[[obsindex]]
 colnames(out$mat) <- h5$var[[varindex]]
 
+
+# There is a raw count matrix.
+if ("raw_counts" %in% names(h5$layers)) {
+  if (typeof(h5$layers$raw_counts) == "list") {
+    rattr <- h5readAttributes("data/data.h5ad", "/layers/raw_counts")
+    raw_indptr <- as.matrix(h5$layers$raw_counts$indptr)[,1]
+    raw_indices <- as.matrix(h5$layers$raw_counts$indices)[,1]
+    raw_data <- as.matrix(h5$layers$raw_counts$data)[,1]
+    if (rattr$`encoding-type` == "csr_matrix") {
+      out$raw <- sparseMatrix(p=raw_indptr,
+                              x=raw_data,
+                              j=raw_indices,
+                              dims=rattr$shape,
+                              index1=F)
+    } else if (rattr$`encoding-type` == "csc_matrix") {
+      out$raw <- sparseMatrix(p=raw_indptr,
+                              x=raw_data,
+                              i=raw_indices,
+                              dims=rattr$shape,
+                              index1=F)
+    } else {
+      message("Unknown sparse matrix format, ignoring")
+    }
+  } else {
+    out$raw <- t(h5$layers$raw_counts)
+  }
+  rownames(out$raw) <- h5$obs[[obsindex]]
+  colnames(out$raw) <- h5$var[[varindex]]
+}
+
+
+
 # Row annotations
 out$rows <- h5$obs[Filter(function(n) substr(n, 1, 1) != "_", names(h5$obs))]
 for (name in names(h5$obs$`__categories`)) {

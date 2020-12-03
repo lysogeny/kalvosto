@@ -43,10 +43,9 @@ rdsdat <- readRDS(file_rds)
 mat <- rdsdat$mat
 annotations <- rdsdat$rows
 cols <- rdsdat$cols
-rm(rdsdat)
 
+###### Read metadata
 # Default meta values
-
 meta <- list(
   title="Assign a name to this by creating 'data/meta.yaml'",
   default_x=colnames(annotations)[1],
@@ -67,6 +66,12 @@ if (file.exists(file_meta)) {
   meta[names(meta_extra)] <- meta_extra
 } 
 print(meta)
+
+if ("raw" %in% names(rdsdat) & "Selection Differences" %in% meta$modules_enabled) {
+  rawmat <- rdsdat$raw
+}
+rm(rdsdat)
+
 
 ######### discrete colour
 
