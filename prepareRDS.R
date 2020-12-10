@@ -13,6 +13,11 @@ h5 <- h5dump(file_h5ad)
 
 out <- list()
 
+max_pcs <- 50
+if ("X_pca" %in% names(h5$obsm)) {
+  out$pca <- h5$obsm$X_pca[1:min(max_pcs, dim(h5$obsm$X_pca)[1]),]
+}
+
 # Mat
 if (typeof(h5$X) == "list") {
   xattr <- h5readAttributes("data/data.h5ad", "X")

@@ -43,6 +43,7 @@ rdsdat <- readRDS(file_rds)
 mat <- rdsdat$mat
 annotations <- rdsdat$rows
 cols <- rdsdat$cols
+pca <- rdsdat$pca
 rm(rdsdat)
 
 # Default meta values
