@@ -49,6 +49,13 @@ div.modal-body > div.container-fluid > div.row > div.col-sm-6:nth-child(2) {
   top: 50%;
 }
 
+/*
+ * Make the text next to disabled inputs gray
+ */
+input:disabled + span {
+  color: gray;
+}
+
 
 div.row > div.col-sm-4 {
     width: 300px;

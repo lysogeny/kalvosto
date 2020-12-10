@@ -22,9 +22,13 @@ server <- function(input, output, session, opt) {
     genes <- ifelse(gene_truthiness, genes, basic_default_gene)
     name <- ifelse(srcs == 'gene', genes, srcs)
     names(name) <- dims
+    if (input$basic_log_z) {
+      name['z'] <- paste0('log1p(', name['z'], ')')
+    }
     name
   })
 
+  # This represents the data that will be plotted.
   feature <- reactive({
     srcs <- src()
     genes <- gene()
@@ -42,6 +46,16 @@ server <- function(input, output, session, opt) {
     }, srcs, genes, SIMPLIFY=F) 
     features <- as.data.frame(features) # as.matrix will densify
     names(features) <- gsub("basic_(.*)_src", "\\1", names(features))
+    # Handle z axis transformations
+    if (class(features$z) %in% c("factor", "character")) {
+      updateCheckboxInput(session, "basic_log_z", value=F)
+      shinyjs::disable("basic_log_z")
+    } else {
+      shinyjs::enable("basic_log_z")
+      if (input$basic_log_z) {
+        features$z <- log1p(features$z)
+      }
+    }
     # This checks if we are faceting by gene
     faceted_vars <- grep("\\..+", colnames(features))
     if (length(faceted_vars) > 0) {
