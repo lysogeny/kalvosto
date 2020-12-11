@@ -53,7 +53,7 @@ server <- function(input, output, session, opt) {
     } else {
       shinyjs::enable("basic_log_z")
       if (input$basic_log_z) {
-        features$z <- log1p(features$z)
+        features[names(features)[-(1:2)]] <- lapply(names(features)[-(1:2)], function(x) log1p(features[[x]]))
       }
     }
     # This checks if we are faceting by gene
