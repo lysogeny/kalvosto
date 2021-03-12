@@ -5,6 +5,7 @@ library("ggplot2")
 library("plotly")
 library("viridis")
 library("Matrix")
+library("ggiraph")
 #library("clusterProfiler")
 
 # NB: currently there is a problem that all plots get drawn 4 times on initial

@@ -98,12 +98,14 @@ server <- function(input, output, session, opt) {
     }
   })
 
-  output$basic_plot <- renderPlotly({
+  output$basic_plot <- renderGirafe({
     d <- feature()
     name <- feature_names()
     d$row <- 1:dim(d)[1]
     g <- ggplot(d, aes(x, y, col=z, key=row)) +
-      geom_jitter(width=ifelse(is.numeric(d$x), 0, 0.4),
+      geom_jitter_interactive(
+        aes(data_id=row, tooltip=z),
+        width=ifelse(is.numeric(d$x), 0, 0.4),
                   height=ifelse(is.numeric(d$y), 0, 0.4),
                   size=opt$size, alpha=opt$alpha) +
       labs(col=name[['z']], x=name[['x']], y=name[['y']]) +
@@ -112,7 +114,7 @@ server <- function(input, output, session, opt) {
     if (input$basic_asp_lock) {
       g <- g + coord_fixed()
     }
-    return(layout(ggplotly(g, key=d$row), dragmode="lasso"))
+    return(girafe(ggobj=g))
   })#, res=150)
 
   values <- reactive({

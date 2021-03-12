@@ -19,6 +19,6 @@ sidebarLayout(
     )
   ),
   mainPanel(
-    plotlyOutput(outputId="basic_plot")
+    girafeOutput(outputId="basic_plot")
   ),
 )
