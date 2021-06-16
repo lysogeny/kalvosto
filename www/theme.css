@@ -2,7 +2,7 @@
     height: calc(100vh - 200px) !important;
     width: 100%;
 }
-#basic_plot, #simple_plot, #twin_plot1, #twin_plot2, #nightmare_plot1, #nightmare_plot2 {
+#basic_plot, #simple_plot, #twin_plot1, #twin_plot2, #nightmare_plot1, #nightmare_plot2, #inspector_plot {
     height: calc(100vh - 110px) !important;
     width: 100%;
 }

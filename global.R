@@ -54,7 +54,7 @@ meta <- list(
   default_y=colnames(annotations)[2],
   default_z=colnames(annotations)[3],
   default_gene=colnames(mat)[1],
-  modules_enabled=c("Basic Plot", "Twin View", "Selection Table", "Selection Differences"),
+  modules_enabled=c("Basic Plot", "Twin View", "Selection Table", "Selection Differences", "Cell Inspector"),
   default_scale_cont="ViridisC",
   default_scale_disc="Rainbow",
   default_point_size=1.0,
